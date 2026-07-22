@@ -1,10 +1,14 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/authentication/authenticate.dart';
+import 'package:flutter_application_1/screens/home/home.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return MaterialApp(
+      home: Authenticate(),
+    );
   }
 }
