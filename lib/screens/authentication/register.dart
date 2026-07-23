@@ -6,7 +6,8 @@ import 'package:flutter_application_1/constants/styles.dart';
 import 'package:flutter_application_1/services/auth.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  final Function toggle;
+  const Register({Key? key, required this.toggle}) : super(key: key);
 
   @override
   State<Register> createState() => _RegisterState();

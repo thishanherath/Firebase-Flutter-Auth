@@ -6,7 +6,8 @@ import 'package:flutter_application_1/constants/styles.dart';
 import 'package:flutter_application_1/services/auth.dart';
 
 class Sign_In extends StatefulWidget {
-  const Sign_In({super.key});
+  final Function toggle;
+  const Sign_In({Key? key, required this.toggle}) : super(key: key);
 
   @override
   State<Sign_In> createState() => _Sign_InState();
@@ -24,7 +25,6 @@ class _Sign_InState extends State<Sign_In> {
   String password = "";
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgBlack,
@@ -40,7 +40,13 @@ class _Sign_InState extends State<Sign_In> {
             children: [
               Text(description, style: descriptionStyle),
 
-              Center(child: Image.network('https://img.icons8.com/?size=100&id=TjTdwE5q2APd&format=png&color=000000', width: 186, height: 186)),
+              Center(
+                child: Image.network(
+                  'https://img.icons8.com/?size=100&id=TjTdwE5q2APd&format=png&color=000000',
+                  width: 186,
+                  height: 186,
+                ),
+              ),
 
               Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -60,7 +66,9 @@ class _Sign_InState extends State<Sign_In> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'password'),
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'password',
+                        ),
                         validator: (value) => value!.length < 6
                             ? 'Enter a password 6+ chars long'
                             : null,
@@ -77,7 +85,7 @@ class _Sign_InState extends State<Sign_In> {
                         "Login with social accounts",
                         style: descriptionStyle,
                       ),
-                
+
                       GestureDetector(
                         onTap: () async {},
                         child: Center(
@@ -88,14 +96,17 @@ class _Sign_InState extends State<Sign_In> {
                           ),
                         ),
                       ),
-                
+
                       SizedBox(height: 20),
-                
+
                       //register
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Don't have an account?", style: descriptionStyle),
+                          Text(
+                            "Don't have an account?",
+                            style: descriptionStyle,
+                          ),
                           const SizedBox(width: 10),
                           GestureDetector(
                             onTap: () {
@@ -111,9 +122,9 @@ class _Sign_InState extends State<Sign_In> {
                           ),
                         ],
                       ),
-                
+
                       const SizedBox(height: 20),
-                
+
                       GestureDetector(
                         onTap: () async {
                           dynamic result = await _auth.signInAnon();
@@ -132,12 +143,20 @@ class _Sign_InState extends State<Sign_In> {
                             borderRadius: BorderRadius.circular(100),
                             border: Border.all(color: mainYellow, width: 5),
                           ),
-                          child: Center(child: const Text("LOG IN", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))),
+                          child: Center(
+                            child: const Text(
+                              "LOG IN",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                
+
                       const SizedBox(height: 20),
-                
+
                       GestureDetector(
                         onTap: () async {
                           dynamic result = await _auth.signInAnon();
@@ -156,7 +175,15 @@ class _Sign_InState extends State<Sign_In> {
                             borderRadius: BorderRadius.circular(100),
                             border: Border.all(color: mainYellow, width: 5),
                           ),
-                          child: Center(child: const Text("LOG AS GUEST", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))),
+                          child: Center(
+                            child: const Text(
+                              "LOG AS GUEST",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
