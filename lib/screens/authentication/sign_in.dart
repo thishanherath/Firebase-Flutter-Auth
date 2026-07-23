@@ -1,28 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/constants/colors.dart';
 import 'package:flutter_application_1/constants/description.dart';
 import 'package:flutter_application_1/constants/styles.dart';
 import 'package:flutter_application_1/services/auth.dart';
 
-class Sign_In extends StatefulWidget {
+class SignIn extends StatefulWidget {
   final Function toggle;
-  const Sign_In({Key? key, required this.toggle}) : super(key: key);
+
+  const SignIn({super.key, required this.toggle});
 
   @override
-  State<Sign_In> createState() => _Sign_InState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _Sign_InState extends State<Sign_In> {
-  //ref for the AuthService class
+class _SignInState extends State<SignIn> {
   final AuthServices _auth = AuthServices();
 
-  //for key
   final _formKey = GlobalKey<FormState>();
 
-  //email passowrd status
   String email = "";
   String password = "";
+
+  Future<void> signIn() async {
+    if (_formKey.currentState!.validate()) {
+      dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+
+      if (!mounted) return;
+
+      if (result == null) {
+        debugPrint("Error signing in");
+      } else {
+        debugPrint("Signed in anonymously");
+        debugPrint(result.uid);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,10 @@ class _Sign_InState extends State<Sign_In> {
           padding: const EdgeInsets.only(left: 15, right: 10),
           child: Column(
             children: [
-              Text(description, style: descriptionStyle),
+              Text(
+                description,
+                style: descriptionStyle,
+              ),
 
               Center(
                 child: Image.network(
@@ -55,32 +70,40 @@ class _Sign_InState extends State<Sign_In> {
                   child: Column(
                     children: [
                       TextFormField(
-                        decoration: textInputDecoration,
-                        validator: (value) =>
-                            value!.isEmpty ? 'Enter an email' : null,
+                        decoration: textInputDecoration.copyWith(
+                          hintText: "Email",
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Enter an email";
+                          }
+                          return null;
+                        },
                         onChanged: (value) {
-                          setState(() {
-                            email = value;
-                          });
+                          email = value;
                         },
                       ),
+
                       const SizedBox(height: 20),
+
                       TextFormField(
                         decoration: textInputDecoration.copyWith(
-                          hintText: 'password',
+                          hintText: "Password",
                         ),
-                        validator: (value) => value!.length < 6
-                            ? 'Enter a password 6+ chars long'
-                            : null,
                         obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.length < 6) {
+                            return "Enter a password 6+ chars long";
+                          }
+                          return null;
+                        },
                         onChanged: (value) {
-                          setState(() {
-                            password = value;
-                          });
+                          password = value;
                         },
                       ),
-                      //Google
+
                       const SizedBox(height: 20),
+
                       const Text(
                         "Login with social accounts",
                         style: descriptionStyle,
@@ -97,9 +120,8 @@ class _Sign_InState extends State<Sign_In> {
                         ),
                       ),
 
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                      //register
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -107,10 +129,12 @@ class _Sign_InState extends State<Sign_In> {
                             "Don't have an account?",
                             style: descriptionStyle,
                           ),
+
                           const SizedBox(width: 10),
+
                           GestureDetector(
                             onTap: () {
-                              // Navigate to the registration screen
+                              widget.toggle();
                             },
                             child: Text(
                               "REGISTER",
@@ -126,25 +150,20 @@ class _Sign_InState extends State<Sign_In> {
                       const SizedBox(height: 20),
 
                       GestureDetector(
-                        onTap: () async {
-                          dynamic result = await _auth.signInAnon();
-                          if (result == null) {
-                            print("error signing in");
-                          } else {
-                            print("signed in annonymously");
-                            print(result.uid);
-                          }
-                        },
+                        onTap: signIn,
                         child: Container(
                           height: 40,
                           width: 200,
                           decoration: BoxDecoration(
                             color: bgBlack,
                             borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: mainYellow, width: 5),
+                            border: Border.all(
+                              color: mainYellow,
+                              width: 5,
+                            ),
                           ),
-                          child: Center(
-                            child: const Text(
+                          child: const Center(
+                            child: Text(
                               "LOG IN",
                               style: TextStyle(
                                 color: Colors.white,
@@ -160,11 +179,14 @@ class _Sign_InState extends State<Sign_In> {
                       GestureDetector(
                         onTap: () async {
                           dynamic result = await _auth.signInAnon();
+
+                          if (!mounted) return;
+
                           if (result == null) {
-                            print("error signing in");
+                            debugPrint("Error guest login");
                           } else {
-                            print("signed in annonymously");
-                            print(result.uid);
+                            debugPrint("Guest login successful");
+                            debugPrint(result.uid);
                           }
                         },
                         child: Container(
@@ -173,10 +195,13 @@ class _Sign_InState extends State<Sign_In> {
                           decoration: BoxDecoration(
                             color: bgBlack,
                             borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: mainYellow, width: 5),
+                            border: Border.all(
+                              color: mainYellow,
+                              width: 5,
+                            ),
                           ),
-                          child: Center(
-                            child: const Text(
+                          child: const Center(
+                            child: Text(
                               "LOG AS GUEST",
                               style: TextStyle(
                                 color: Colors.white,
@@ -197,18 +222,3 @@ class _Sign_InState extends State<Sign_In> {
     );
   }
 }
-
-
-
-// ElevatedButton(
-//         onPressed: () async {
-//           dynamic result = await _auth.signInAnon();
-//           if (result == Null) {
-//             print("error signing in");
-//           } else {
-//             print("signed in annonymously");
-//             print(result.uid);
-//           }
-//         },
-//         child: const Text('Sign In Anonymously'),
-//       ),

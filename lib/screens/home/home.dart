@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/constants/colors.dart';
 import 'package:flutter_application_1/constants/description.dart';
 import 'package:flutter_application_1/services/auth.dart';
@@ -28,7 +27,7 @@ class _HomeState extends State<Home> {
           actions: [
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(bgBlack),
+                backgroundColor: WidgetStateProperty.all<Color>(bgBlack),
               ),
               onPressed: () async {
                 await _auth.signOut();

@@ -21,7 +21,7 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (signinPage == true) {
-      return Sign_In(toggle: switchPages,);
+      return SignIn(toggle: switchPages,);
     } else {
       return Register(toggle: switchPages,);
     }
